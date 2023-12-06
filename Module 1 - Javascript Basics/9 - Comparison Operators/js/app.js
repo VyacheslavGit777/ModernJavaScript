@@ -24,4 +24,4 @@ console.log(true == '1');
 console.log(null == undefined);
 console.log(null === undefined);
 console.log(NaN == NaN);
-console.log(NaN == NaN);
+console.log(NaN === NaN);
