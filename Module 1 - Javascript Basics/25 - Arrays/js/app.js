@@ -1,6 +1,6 @@
-const isAboutArray = false // t - about arr, f - methods arr
+const isAboutArray = 3 // 1 - about arr, 2 - methods arr, 3 - task
 
-if (isAboutArray) {
+if (isAboutArray == 1) {
   const color1 = 'red';
   const color2 = 'orange';
   const color3 = 'yellow';
@@ -34,7 +34,7 @@ if (isAboutArray) {
   const anyItems = [4, true, new Date(), 'sometheing'];
 
   console.log(anyItems);
-} else {
+} else if (isAboutArray == 2) {
   const numbers = [23, 54, 4, 31, 11];
   let result;
 
@@ -65,4 +65,25 @@ if (isAboutArray) {
   result = numbers.splice(1, 2);
   console.log(result);
   console.log(numbers);
+
+  result = numbers.reverse();
+  console.log(result);
+  console.log(numbers);
+
+  result = numbers.slice(1, 4);
+  console.log(result);
+  console.log(numbers);
+
+  result = numbers.concat(result);
+  console.log(result);
+  console.log(numbers);
+} else {
+  const calculateTips = (bill) => bill < 20 ? bill * 0.2 : bill * 0.15;  
+  const billsArr = [11, 20, 47];
+  const tipsArr = [calculateTips(billsArr[0]), calculateTips(billsArr[1]), calculateTips(billsArr[2])];
+  const totalBills = [billsArr[0] + tipsArr[0], billsArr[1] + tipsArr[1], billsArr[2] + tipsArr[2]];
+
+  console.log('Bills: ' + billsArr);
+  console.log('Tips: ' + tipsArr);
+  console.log('Total: ' + totalBills);
 }
