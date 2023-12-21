@@ -1,0 +1,21 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body {
+  background-color: #e4e4e4;
+}
+
+img {
+  display: block;
+  width: 1000px;
+  margin: 20px auto;
+  border: 2px solid #8cd62a;
+}
+
+h2 {
+  font-size: 24px;
+  text-align: center;
+  margin: 40px 0;
+}/*# sourceMappingURL=style.css.map */
