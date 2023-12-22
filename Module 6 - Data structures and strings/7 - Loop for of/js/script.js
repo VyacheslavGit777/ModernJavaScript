@@ -1,5 +1,4 @@
 'use strict';
-
 const japaneseRestaurant = {
   name: 'Banzai',
   location: '108 Markham Woods Rd, Longwood, USA',
@@ -54,43 +53,11 @@ const japaneseRestaurant = {
   },
 };
 
-const isOrOp = 2;
-
-if (isOrOp == 1) {
-  // OR (||) operator, Use any data types, return any data types, short-circuit evaluation
-  console.log(5 || 'Hello');
-  console.log('' || 'Hello');
-  console.log(true || 0);
-  console.log(undefined || null);
-  console.log(undefined || '' || 0 || NaN || 'Hey' || 23);
-
-  //japaneseRestaurant.guestsNumber = 10;
-  //japaneseRestaurant.guestsNumber = 0;
-
-  const guests = japaneseRestaurant.guestsNumber
-    ? japaneseRestaurant.guestsNumber
-    : 5;
-
-  console.log(guests);
-
-  const guests1 = japaneseRestaurant.guestsNumber || 3;
-  console.log(guests1);
-  console.log(japaneseRestaurant);
-} else {
-  // AND (&&) operator, Use any data types, return any data types, short-circuit evaluation
-  console.log(0 && 'Hello!');
-  console.log(1 && 'Hello');
-  console.log('hey' && 34 && 0 && 44 && null);
-
-  if (japaneseRestaurant.orderRamen) {
-    japaneseRestaurant.orderRamen('Something');
-  }
-
-  japaneseRestaurant.orderRamen && japaneseRestaurant.orderRamen('Something');
+const menu = [...japaneseRestaurant.appetizers, ...japaneseRestaurant.mainMenu];
+for (const x of menu) {
+  console.log(x);
 }
 
-// Nullish Coalescing
-// Nullish values: null and undefined (Not 0 or '')
-japaneseRestaurant.guestsNumber = 0;
-const gsts = japaneseRestaurant.guestsNumber ?? 7;
-console.log(gsts);
+for (const [index, food] of menu.entries()) {
+  console.log(`${index + 1}. ${food}`);
+}
