@@ -30,8 +30,8 @@ const game = {
       'Dembele',
     ],
   ],
-  score: '2:1',
-  scored: ['Kroos', 'Benzema', 'Mingueza'],
+  score: '3:1',
+  scored: ['Kroos', 'Benzema', 'Mingueza', 'Benzema'],
   date: 'Apr 10th, 2021',
   odds: {
     team1: 1.48,
@@ -44,11 +44,27 @@ for (const score of game.scored.entries()) {
   console.log(`Goal ${score[0] + 1} - ${score[1]}`);
 }
 
-console.log(
-  'Average: ' + (game.odds.team1 + game.odds.team2 + game.odds.draw) / 3
-);
-
 const odds = game.odds;
-for (const [key, value] of Object.entries(odds)) {
-  console.log(`Rate for ${game[key] ?? 'draw'}: ${value}`);
+
+let averageOdd = 0;
+
+for (const odd of Object.values(odds)) {
+  averageOdd += odd;
 }
+
+averageOdd /= Object.values(odds).length;
+
+console.log(`Average: ${averageOdd}`);
+
+for (const [key, value] of Object.entries(odds)) {
+  const mutableText = key === 'draw' ? 'draw' : `${game[key]} victory`;
+  console.log(`Rate for ${mutableText}: ${value}`);
+  //console.log(`Rate for ${game[key] ?? 'draw'}: ${value}`);
+}
+
+const goalScorers = {};
+
+for (const player of game.scored) {
+  goalScorers[player] ? goalScorers[player]++ : (goalScorers[player] = 1);
+}
+console.log(goalScorers);
