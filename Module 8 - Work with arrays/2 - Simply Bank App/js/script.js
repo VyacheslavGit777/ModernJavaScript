@@ -64,3 +64,74 @@ const inputTransferAmount = document.querySelector('.form__input--amount');
 const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
+
+const displayTransactions = function (transactions) {
+  containerTransactions.innerHTML = '';
+  transactions.forEach(function (transaction, index) {
+    const transactionType = transaction > 0 ? 'deposit' : 'withdrawal';
+
+    const transactionRow = `
+    <div class="transactions__row">
+      <div class="transactions__type transactions__type--${transactionType}">
+        ${index + 1} ${transactionType}
+      </div>
+      <div class="transactions__value">${transaction}$</div>
+    </div>
+    `;
+    containerTransactions.insertAdjacentHTML('afterbegin', transactionRow);
+  });
+};
+
+displayTransactions(account1.transactions);
+
+const createNickNames = function (accs) {
+  accs.forEach(
+    acc =>
+      (acc.nickname = acc.userName
+        .toLowerCase()
+        .split(' ')
+        .map(item => item[0])
+        .join(''))
+  );
+};
+
+createNickNames(accounts);
+
+/* const userName = 'Oliver Avila'; // nickname = 'oa'
+const nickname = userName
+  .toLowerCase()
+  .split(' ')
+  .map(item => item[0])
+  .join('');
+console.log(nickname); */
+
+const displayBalance = function (transactions) {
+  const balance = transactions.reduce(
+    (acc, transaction) => acc + transaction,
+    0
+  );
+  labelBalance.textContent = `${balance}$`;
+};
+
+displayBalance(account1.transactions);
+
+const displayTotal = function (transactions) {
+  const depositesTotal = transactions
+    .filter(transaction => transaction > 0)
+    .reduce((acc, transaction) => acc + transaction, 0);
+  labelSumIn.textContent = `${depositesTotal}$`;
+
+  const withdrawalsTotal = transactions
+    .filter(transaction => transaction < 0)
+    .reduce((acc, transaction) => acc + transaction, 0);
+  labelSumOut.textContent = `${withdrawalsTotal}$`;
+
+  const interestTransactions = transactions
+    .filter(transaction => transaction > 0)
+    .map(deposites => (deposites * 1.5) / 100)
+    .filter((interest, index, arr) => interest >= 5)
+    .reduce((acc, interest) => acc + interest, 0);
+  labelSumInterest.textContent = `${interestTransactions}$`;
+};
+
+displayTotal(account1.transactions);
