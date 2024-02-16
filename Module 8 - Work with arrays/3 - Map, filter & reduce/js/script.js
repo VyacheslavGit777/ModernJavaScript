@@ -128,4 +128,7 @@ if (variant === 1) {
 
   console.log(getAverageHumanAge(testData1));
   console.log(getAverageHumanAge(testData2));
+
+  const arr2 = [10, 20, 30];
+  console.log(arr2.reduce((acc, num, index, arr) => acc + num / arr.length, 0));
 }

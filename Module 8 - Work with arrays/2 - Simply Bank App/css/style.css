@@ -110,10 +110,11 @@ nav {
   grid-template-rows: auto repeat(3, 15rem) auto;
   gap: 2rem;
   /* Create fade anumation */
+  opacity: 0;
+  -webkit-transition: all 1s;
+  transition: all 1s;
 }
 
-/*   opacity: 0 */
- * transition: all 1s */
 .balance {
   grid-column: 1/span 2;
   display: -webkit-box;
@@ -142,7 +143,7 @@ nav {
 .balance__value {
   font-size: 4.5rem;
   font-weight: 400;
-  letter-spacing: 3px;
+  letter-spacing: 1px;
 }
 
 /* Transactions */
@@ -223,12 +224,12 @@ nav {
 
 .total__value--in, .total__value--interest {
   color: #399bb3;
-  letter-spacing: 3px;
+  letter-spacing: 1px;
 }
 
 .total__value--out {
   color: #f07b0d;
-  letter-spacing: 3px;
+  letter-spacing: 1px;
 }
 
 .btn--sort {
