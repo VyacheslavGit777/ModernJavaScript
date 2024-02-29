@@ -1,10 +1,11 @@
 'use strict';
 
-const variant = 4;
+const variant = 5;
 // 1 - Преобразование и проверка чисел
 // 2 - Работа с Math
 // 3 - Оператор остаток
 // 4 - BigInt
+// 5 - Интернационализация чисел
 
 if (variant === 1) {
   console.log(10 === 10.0);
@@ -151,4 +152,28 @@ if (variant === 1) {
   //console.log(Math.pow(bigNumber, 2));
   console.log(5 / 2);
   console.log(5n / 2n);
+} else if (variant === 5) {
+  const a = 325458478.21;
+
+  const options = {
+    style: 'unit',
+    unit: 'mile-per-hour',
+  };
+
+  const optionsCur = {
+    style: 'currency',
+    currency: 'EUR',
+  };
+
+  console.log('US', new Intl.NumberFormat('en-US', options).format(a));
+  console.log('Russia', new Intl.NumberFormat('ru-RU', options).format(a));
+  console.log('Germany', new Intl.NumberFormat('de-DE', options).format(a));
+  console.log('Syria', new Intl.NumberFormat('ar-SY', options).format(a));
+
+  console.log();
+
+  console.log('US', new Intl.NumberFormat('en-US', optionsCur).format(a));
+  console.log('Russia', new Intl.NumberFormat('ru-RU', optionsCur).format(a));
+  console.log('Germany', new Intl.NumberFormat('de-DE', optionsCur).format(a));
+  console.log('Syria', new Intl.NumberFormat('ar-SY', optionsCur).format(a));
 }

@@ -1,7 +1,9 @@
 'use strict';
 
-const variant = 1;
+const variant = 3;
 // 1 - Работа с датами
+// 2 - Операции с датами
+// 3 - Интернационализация дат
 
 if (variant === 1) {
   const now = new Date();
@@ -50,4 +52,35 @@ if (variant === 1) {
   console.log(futureDate.getMinutes());
   console.log(futureDate.getSeconds());
   console.log(futureDate.toISOString());
+  console.log(futureDate.getTime());
+  console.log(new Date(7956088139000));
+  console.log(Date.now());
+} else if (variant === 2) {
+  const futureDate = new Date(2222, 1, 13, 11, 28, 59);
+  console.log(Number(futureDate));
+  console.log(+futureDate);
+  console.log(-futureDate);
+
+  const getDaysBetween2Dates = (date1, date2) =>
+    Math.abs((date2 - date1) / (1000 * 60 * 60 * 24));
+  const days = getDaysBetween2Dates(
+    new Date(2021, 9, 12),
+    new Date(2021, 9, 1)
+  );
+  console.log(days);
+} else if (variant === 3) {
+  const now = new Date();
+  const options = {
+    hour: 'numeric',
+    minute: 'numeric',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    weekday: 'long',
+  }; // numeric, long, 2-digit
+  const locale = navigator.language;
+  console.log(locale);
+  console.log(new Intl.DateTimeFormat('ru-RU').format(now));
+  console.log(new Intl.DateTimeFormat('en-US').format(now));
+  console.log(new Intl.DateTimeFormat(locale, options).format(now));
 }

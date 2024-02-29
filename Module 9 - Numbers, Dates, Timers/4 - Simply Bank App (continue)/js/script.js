@@ -11,11 +11,11 @@ const account1 = {
     '2020-10-02T14:43:31.074Z',
     '2020-10-29T11:24:19.761Z',
     '2020-11-15T10:45:23.907Z',
-    '2021-01-22T12:17:46.255Z',
-    '2021-02-12T15:14:06.486Z',
-    '2021-03-09T11:42:26.371Z',
-    '2021-05-21T07:43:59.331Z',
-    '2021-06-22T15:21:20.814Z',
+    '2024-02-20T12:17:46.255Z',
+    '2024-02-21T15:14:06.486Z',
+    '2024-02-22T11:42:26.371Z',
+    '2024-02-23T07:43:59.331Z',
+    '2024-02-25T15:21:20.814Z',
   ],
   currency: 'USD',
   locale: 'en-US',
@@ -71,7 +71,7 @@ const account4 = {
     '2021-01-22T12:17:46.255Z',
     '2021-02-12T15:14:06.486Z',
   ],
-  currency: 'EUR',
+  currency: 'CAD',
   locale: 'fr-CA',
 };
 
@@ -119,6 +119,33 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+const formatTransactionDate = function (date, locale) {
+  const getDaysBetween2Dates = (date1, date2) =>
+    Math.round(Math.abs((date2 - date1) / (1000 * 60 * 60 * 24)));
+
+  const daysPassed = getDaysBetween2Dates(new Date(), date);
+
+  if (daysPassed === 0) return 'Сегодня';
+  else if (daysPassed === 1) return 'Вчера';
+  else if (daysPassed < 5) return `${daysPassed} дня назад`;
+  else if (daysPassed <= 7) return `${daysPassed} дней назад`;
+  else {
+    /* const day = `${date.getDate()}`.padStart(2, '0');
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`; */
+    return new Intl.DateTimeFormat(locale).format(date);
+  }
+};
+
+const getFormattedTrans = function (locale, currency, transaction) {
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currency,
+  }).format(transaction);
+};
+
 const displayTransactions = function (account, sort = false) {
   containerTransactions.innerHTML = '';
 
@@ -128,12 +155,9 @@ const displayTransactions = function (account, sort = false) {
 
   transacs.forEach(function (transaction, index) {
     const transactionType = transaction > 0 ? 'deposit' : 'withdrawal';
-    const date = new Date(account.transactionsDates[index]);
-    const day = `${date.getDate()}`.padStart(2, '0');
-    const month = `${date.getMonth() + 1}`.padStart(2, '0');
-    const year = date.getFullYear();
 
-    const transDate = `${day}/${month}/${year}`;
+    const date = new Date(account.transactionsDates[index]);
+    const transDate = formatTransactionDate(date, account.locale);
 
     const transactionRow = `
     <div class="transactions__row">
@@ -141,7 +165,11 @@ const displayTransactions = function (account, sort = false) {
         ${index + 1} ${transactionType}
       </div>
       <div class="transactions__date">${transDate}</div>
-      <div class="transactions__value">${transaction.toFixed(2)}$</div>
+      <div class="transactions__value">${getFormattedTrans(
+        account.locale,
+        account.currency,
+        transaction
+      )}</div>
     </div>
     `;
     containerTransactions.insertAdjacentHTML('afterbegin', transactionRow);
@@ -175,26 +203,42 @@ const displayBalance = function (account) {
     0
   );
   account.balance = balance;
-  labelBalance.textContent = `${balance.toFixed(2)}$`;
+  labelBalance.textContent = getFormattedTrans(
+    account.locale,
+    account.currency,
+    balance
+  );
 };
 
 const displayTotal = function (account) {
-  const depositesTotal = account.transactions
-    .filter(transaction => transaction > 0)
-    .reduce((acc, transaction) => acc + transaction, 0);
-  labelSumIn.textContent = `${depositesTotal.toFixed(2)}$`;
+  const depositesTotal = getFormattedTrans(
+    account.locale,
+    account.currency,
+    account.transactions
+      .filter(transaction => transaction > 0)
+      .reduce((acc, transaction) => acc + transaction, 0)
+  );
+  labelSumIn.textContent = depositesTotal;
 
-  const withdrawalsTotal = account.transactions
-    .filter(transaction => transaction < 0)
-    .reduce((acc, transaction) => acc + transaction, 0);
-  labelSumOut.textContent = `${withdrawalsTotal.toFixed(2)}$`;
+  const withdrawalsTotal = getFormattedTrans(
+    account.locale,
+    account.currency,
+    account.transactions
+      .filter(transaction => transaction < 0)
+      .reduce((acc, transaction) => acc + transaction, 0)
+  );
+  labelSumOut.textContent = withdrawalsTotal;
 
-  const interestTransactions = account.transactions
-    .filter(transaction => transaction > 0)
-    .map(deposites => (deposites * account.interest) / 100)
-    .filter((interest, index, arr) => interest >= 5)
-    .reduce((acc, interest) => acc + interest, 0);
-  labelSumInterest.textContent = `${interestTransactions.toFixed(2)}$`;
+  const interestTransactions = getFormattedTrans(
+    account.locale,
+    account.currency,
+    account.transactions
+      .filter(transaction => transaction > 0)
+      .map(deposites => (deposites * account.interest) / 100)
+      .filter((interest, index, arr) => interest >= 5)
+      .reduce((acc, interest) => acc + interest, 0)
+  );
+  labelSumInterest.textContent = interestTransactions;
 };
 
 const updateUi = function (account) {
@@ -213,12 +257,26 @@ btnLogin.addEventListener('click', function (e) {
   if (currentAccount?.pin === +inputLoginPin.value) {
     containerApp.style.opacity = 100;
 
-    const now = new Date();
+    /*const now = new Date();
     const day = `${now.getDate()}`.padStart(2, '0');
     const month = `${now.getMonth() + 1}`.padStart(2, '0');
     const year = now.getFullYear();
 
-    labelDate.textContent = `${day}/${month}/${year}`;
+    labelDate.textContent = `${day}/${month}/${year}`;*/
+    const now = new Date();
+    const options = {
+      hour: 'numeric',
+      minute: 'numeric',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      weekday: 'long',
+    }; // numeric, long, 2-digit
+    //const locale = navigator.language;
+    labelDate.textContent = new Intl.DateTimeFormat(
+      currentAccount.locale,
+      options
+    ).format(now);
 
     labelWelcome.textContent = `Рады, что вы снова с нами, ${
       currentAccount.userName.split(' ')[0]
