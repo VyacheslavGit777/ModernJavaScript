@@ -247,7 +247,25 @@ const updateUi = function (account) {
   displayTotal(account);
 };
 
-let currentAccount;
+let currentAccount, currentLogOutTimer;
+
+const startLogoutTimer = function () {
+  const logOutTimerCallback = function () {
+    const minutes = String(Math.trunc(timeOut / 60)).padStart(2, '0');
+    const seconds = String(timeOut % 60).padStart(2, '0');
+    labelTimer.textContent = `${minutes}:${seconds}`;
+    if (timeOut === 0) {
+      clearInterval(logOutTimer);
+      containerApp.style.opacity = 0;
+      labelWelcome.textContent = 'Войдите в свой аккаунт';
+    }
+    timeOut--;
+  };
+  let timeOut = 300;
+  logOutTimerCallback();
+  const logOutTimer = setInterval(logOutTimerCallback, 1000);
+  return logOutTimer;
+};
 
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
@@ -286,6 +304,11 @@ btnLogin.addEventListener('click', function (e) {
     inputLoginPin.value = '';
     inputLoginPin.blur();
 
+    if (currentLogOutTimer) {
+      clearInterval(currentLogOutTimer);
+    }
+    currentLogOutTimer = startLogoutTimer();
+
     updateUi(currentAccount);
   }
 });
@@ -310,6 +333,9 @@ btnTransfer.addEventListener('click', function (e) {
     currentAccount.transactionsDates.push(new Date().toISOString());
     recipientAccount.transactionsDates.push(new Date().toISOString());
     updateUi(currentAccount);
+
+    clearInterval(currentLogOutTimer);
+    currentLogOutTimer = startLogoutTimer();
   }
 });
 
@@ -344,11 +370,15 @@ btnLoan.addEventListener('click', function (e) {
     loanAmount > 0 &&
     currentAccount.transactions.some(trans => trans >= (loanAmount * 10) / 100)
   ) {
-    currentAccount.transactions.push(loanAmount);
-    currentAccount.transactionsDates.push(new Date().toISOString());
-    updateUi(currentAccount);
+    setTimeout(function () {
+      currentAccount.transactions.push(loanAmount);
+      currentAccount.transactionsDates.push(new Date().toISOString());
+      updateUi(currentAccount);
+    }, 5000);
   }
   inputLoanAmount.value = '';
+  clearInterval(currentLogOutTimer);
+  currentLogOutTimer = startLogoutTimer();
 });
 
 let isTransactionsSorted = false;
