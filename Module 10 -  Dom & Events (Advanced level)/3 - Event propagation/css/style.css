@@ -1,0 +1,10 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+img {
+  display: block;
+  width: 1000px;
+  margin: 0 auto;
+}/*# sourceMappingURL=style.css.map */
