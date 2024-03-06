@@ -90,6 +90,11 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
   }
 });
 
+// Вкладки
+const tabs = document.querySelectorAll('.operations__tab');
+const tabContainer = document.querySelectorAll('.operations__tab-container');
+const tabContents = document.querySelectorAll('.operations__content');
+
 /////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////
@@ -259,3 +264,30 @@ document.querySelector('body').addEventListener('click', function (e) {
   console.log('Body', e.target, e.currentTarget);
   console.log(e.currentTarget === this);
 }); */
+
+/////////////////////////////////////////////////////////
+// DOM traversing (Перемещение по DOM)
+
+/* const h1 = document.querySelector('h1');
+
+// Перемещение вниз (к потомокам)
+console.log(h1.querySelectorAll('.highlight'));
+console.log(h1.childNodes);
+console.log(h1.children);
+console.log(h1.firstElementChild);
+h1.firstElementChild.style.color = 'rgb(35,80,125)';
+console.log(h1.lastElementChild);
+
+// Перемещение вверх (к родителям)
+console.log(h1.parentNode);
+console.log(h1.parentElement);
+
+const h2 = document.querySelector('h2');
+console.log(h2);
+h2.closest('.section').style.backgroundColor = 'blue';
+
+// Перемещение в стороны
+console.log(h2.previousElementSibling);
+console.log(h2.nextElementSibling);
+
+console.log(h1.parentElement.children); */
