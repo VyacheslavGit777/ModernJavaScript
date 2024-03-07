@@ -11,6 +11,10 @@ const btnsOpenModalWindow = document.querySelectorAll(
 );
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabContainer = document.querySelector('.operations__tab-container');
+const tabContents = document.querySelectorAll('.operations__content');
+const nav = document.querySelector('.nav');
 
 const openModalWindow = function (e) {
   e.preventDefault();
@@ -91,9 +95,80 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 });
 
 // Вкладки
-const tabs = document.querySelectorAll('.operations__tab');
-const tabContainer = document.querySelectorAll('.operations__tab-container');
-const tabContents = document.querySelectorAll('.operations__content');
+
+tabContainer.addEventListener('click', function (e) {
+  const clickedButton = e.target.closest('.operations__tab');
+  console.log(clickedButton);
+  // Guard clause - Пункт охраны
+  if (!clickedButton) return;
+
+  // Активная вкладка
+  tabs.forEach(tab => tab.classList.remove('operations__tab--active'));
+  clickedButton.classList.add('operations__tab--active');
+
+  // Активынй контент
+  tabContents.forEach(tabContent =>
+    tabContent.classList.remove('operations__content--active')
+  );
+  document
+    .querySelector(`.operations__content--${clickedButton.dataset.tab}`)
+    .classList.add('operations__content--active');
+});
+
+// Анимация потускнения на панели навигации
+
+const navLinksHoverAnimation = function (e) {
+  if (e.target.classList.contains('nav__link')) {
+    const linkOver = e.target;
+    const siblingLinks = linkOver
+      .closest('.nav__links')
+      .querySelectorAll('.nav__link');
+    const logo = linkOver.closest('nav').querySelector('img');
+    const logoText = linkOver.closest('.nav').querySelector('.nav__text');
+
+    siblingLinks.forEach(el => {
+      if (el !== linkOver) el.style.opacity = this;
+    });
+    logo.style.opacity = this;
+    logoText.style.opacity = this;
+  }
+};
+
+/*nav.addEventListener('mouseover', function (e) {
+  navLinksHoverAnimation(e, 0.4);
+});
+
+nav.addEventListener('mouseout', function (e) {
+  navLinksHoverAnimation(e, 1);
+});
+*/
+
+// Работа с аргументами при помощи bind() / this
+nav.addEventListener('mouseover', navLinksHoverAnimation.bind(0.4));
+nav.addEventListener('mouseout', navLinksHoverAnimation.bind(1));
+
+// Sticky navigation
+
+/* const section1Coords = section1.getBoundingClientRect();
+
+window.addEventListener('scroll', function () {
+  console.log(window.scrollY);
+
+  window.scrollY > section1Coords.top
+    ? nav.classList.add('sticky')
+    : nav.classList.remove('sticky');
+}); */
+
+// Sticky navigation - Intersection observer API
+const observerCallback = function (entries, observer) {
+  entries.forEach(entry => console.log(entry));
+};
+const observerOptions = {
+  root: null,
+  threshold: [0, 0.2],
+};
+const observer = new IntersectionObserver(observerCallback, observerOptions);
+observer.observe(section1);
 
 /////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////
