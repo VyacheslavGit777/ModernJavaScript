@@ -202,7 +202,7 @@ const sectionObserver = new IntersectionObserver(apperanceSection, {
 });
 allSections.forEach(function (section) {
   sectionObserver.observe(section);
-  //section.classList.add('section--hidden');
+  section.classList.add('section--hidden');
 });
 
 // Имплементация lazy loading для изображений
@@ -497,3 +497,20 @@ console.log(h2.previousElementSibling);
 console.log(h2.nextElementSibling);
 
 console.log(h1.parentElement.children); */
+
+/////////////////////////////////////////////////////////
+// Lifecycle DOM Events
+
+document.addEventListener('DOMContentLoaded', function (e) {
+  console.log('Дерево DOM создано', e);
+});
+
+window.addEventListener('load', function (e) {
+  console.log('Страница полностью загружена');
+});
+
+//window.addEventListener('beforeunload', function (e) {
+//  e.preventDefault();
+//  console.log(e);
+//  e.returnValue = '';
+//});
