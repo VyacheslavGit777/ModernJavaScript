@@ -1,4 +1,30 @@
 * {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
+}
+
+body {
+  background-color: #dbdbdb;
+}
+
+img {
+  display: block;
+  width: 1000px;
+  margin: 25px auto;
+  border: 1px solid #f03232;
+}
+
+h1, h2 {
+  color: #f03232;
+  font-weight: bold;
+  font-size: 30px;
+  text-align: center;
+  border-bottom: 1px solid #f03232;
+  margin: 30px auto;
+}
+
+h1 {
+  font-size: 40px;
+  color: #ff0303;
+  border-bottom: none;
 }/*# sourceMappingURL=style.css.map */
